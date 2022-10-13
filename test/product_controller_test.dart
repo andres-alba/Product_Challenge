@@ -16,9 +16,17 @@ void main() {
 
   group("when getting all products", () {
     test("it should transform and update allProducts", () async {
-      when(_api.get(url: anyNamed("url"))).thenAnswer((x) async => null);
+      when(_api.get(url: anyNamed("url"))).thenAnswer((x) async => {
+            "products": [
+              {
+                'title': '',
+                'brand': '',
+                'images': [],
+              }
+            ]
+          });
       await sut.retrieveAllProducts();
-      expect(sut.allProduct.length, 2);
+      expect(sut.allProduct.length, 1);
     });
   });
 }

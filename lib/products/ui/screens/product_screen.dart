@@ -20,10 +20,18 @@ class ProductScreen extends StatelessWidget {
           builder: (ctx) {
             var productController = ctx.watch<ProductController>();
             return ListView(
+              shrinkWrap: true,
               children: productController.allProduct
                   .map((x) => ListTile(
+                        subtitle: Text(x.description),
                         title: Column(
-                          children: [Text(x.title)],
+                          children: [
+                            Text(x.title),
+                            Text(
+                              x.stock.toString(),
+                            ),
+                            Image.network(x.images.first),
+                          ],
                         ),
                       ))
                   .toList(),

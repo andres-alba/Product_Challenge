@@ -23,6 +23,9 @@ class Product {
   }
 
   String getStockName() {
-    return "";
+    if (this.stock <= 50) {
+      return "Limited stock";
+    }
+    return this.stock.toString();
   }
 }
