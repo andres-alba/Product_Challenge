@@ -20,38 +20,47 @@ class ProductScreen extends StatelessWidget {
           builder: (ctx) {
             var productController = ctx.watch<ProductController>();
             return GridView.count(
+              childAspectRatio: (1 / 1.5),
               crossAxisCount: 2,
               shrinkWrap: true,
               children: productController.allProduct
                   .map(
-                    (x) => ListTile(
-                      title: Center(
+                    (x) => Card(
+                      elevation: 5,
+                      child: Container(
+                        height: 290,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        margin: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             SizedBox(
                               height: 100,
                               width: 100,
                               child: Image.network(x.images.first),
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  x.title,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w700),
-                                ),
-                                Text(
-                                  x.description,
-                                  maxLines: 3,
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                                Text(
-                                  x.stock.toString(),
-                                ),
-                              ],
+                            Text(
+                              x.title,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 24),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              x.description,
+                              maxLines: 2,
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Text(
+                                x.stock.toString(),
+                                textAlign: TextAlign.end,
+                                style: const TextStyle(
+                                    fontSize: 12, fontStyle: FontStyle.italic),
+                              ),
                             ),
                           ],
                         ),
