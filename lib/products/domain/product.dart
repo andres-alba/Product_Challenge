@@ -4,12 +4,14 @@ class Product {
   final String brand;
   final int stock;
   final List<String> images;
+  final String category;
 
   Product(
       {this.title = "",
       this.description = "",
       this.brand = "",
       this.stock = 0,
+      this.category = "",
       this.images = const []});
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -18,14 +20,15 @@ class Product {
         description: json["description"] ?? "",
         brand: json["brand"] ?? "",
         stock: json["stock"] ?? 0,
+        category: json["category"],
         images:
             (json["images"] as List).map((x) => x as String).toList() ?? []);
   }
 
   String getStockName() {
-    if (this.stock <= 50) {
+    if (stock <= 50) {
       return "Limited stock";
     }
-    return this.stock.toString();
+    return stock.toString();
   }
 }
