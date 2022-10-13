@@ -19,21 +19,45 @@ class ProductScreen extends StatelessWidget {
         body: Builder(
           builder: (ctx) {
             var productController = ctx.watch<ProductController>();
-            return ListView(
+            return GridView.count(
+              crossAxisCount: 2,
               shrinkWrap: true,
               children: productController.allProduct
-                  .map((x) => ListTile(
-                        subtitle: Text(x.description),
-                        title: Column(
+                  .map(
+                    (x) => ListTile(
+                      title: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(x.title),
-                            Text(
-                              x.stock.toString(),
+                            SizedBox(
+                              height: 100,
+                              width: 100,
+                              child: Image.network(x.images.first),
                             ),
-                            Image.network(x.images.first),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  x.title,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                Text(
+                                  x.description,
+                                  maxLines: 3,
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                                Text(
+                                  x.stock.toString(),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
-                      ))
+                      ),
+                    ),
+                  )
                   .toList(),
             );
           },
