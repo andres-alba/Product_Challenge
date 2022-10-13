@@ -25,7 +25,16 @@ class ProductController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void filterProductsBy(String category) {
+  void filterProductsBy(String category) async {
+    var response = (await _api.get(url: "https://dummyjson.com/products")
+        as Map<String, dynamic>);
+    _allProducts = (response["products"] as List<dynamic>)
+        .map((x) {
+          return Product.fromJson(x);
+        })
+        .where((product) => product.category == category)
+        .cast<Product>()
+        .toList();
     notifyListeners();
   }
 }

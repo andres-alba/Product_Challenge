@@ -21,15 +21,18 @@ class ProductScreen extends StatelessWidget {
             var productController = ctx.watch<ProductController>();
             return SingleChildScrollView(
               child: Column(children: [
+                const SizedBox(
+                  height: 10,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: const [
-                    CategoryFilterButton(name: 'Phones'),
-                    CategoryFilterButton(name: 'Laptops'),
-                    CategoryFilterButton(name: 'Fragrances'),
-                    CategoryFilterButton(name: 'SkinCare'),
-                    CategoryFilterButton(name: 'Groceries'),
-                    CategoryFilterButton(name: 'Home'),
+                    CategoryFilterButton(name: 'smartphones'),
+                    CategoryFilterButton(name: 'laptops'),
+                    CategoryFilterButton(name: 'fragrances'),
+                    CategoryFilterButton(name: 'skincare'),
+                    CategoryFilterButton(name: 'groceries'),
+                    CategoryFilterButton(name: 'home-decoration'),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -101,12 +104,16 @@ class CategoryFilterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    var productController = context.watch<ProductController>();
+    return ChangeNotifierProvider(
+      create: (_) => ProductController(Api())..filterProductsBy(name),
       child: SizedBox(
         width: 65,
         height: 40,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            productController.filterProductsBy(name);
+          },
           child: Text(
             name,
             style: const TextStyle(fontSize: 10),

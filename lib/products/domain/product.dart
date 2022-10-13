@@ -20,7 +20,7 @@ class Product {
         description: json["description"] ?? "",
         brand: json["brand"] ?? "",
         stock: json["stock"] ?? 0,
-        category: json["category"],
+        category: json["category"] ?? "",
         images:
             (json["images"] as List).map((x) => x as String).toList() ?? []);
   }
