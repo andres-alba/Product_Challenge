@@ -28,5 +28,15 @@ void main() {
       await sut.retrieveAllProducts();
       expect(sut.allProduct.length, 1);
     });
+
+    test("It should return selected category products", () async {
+      when(_api.get(url: anyNamed("url"))).thenAnswer((x) async => {
+            "products": [
+              {'category': 'laptops'}
+            ]
+          });
+      sut.filterProductsBy("laptops");
+      expect(sut.allProduct.length, 5);
+    });
   });
 }

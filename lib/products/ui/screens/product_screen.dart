@@ -3,6 +3,15 @@ import 'package:products_sandbox/products/ui/controller/product_controller.dart'
 import 'package:products_sandbox/services/api.dart';
 import 'package:provider/provider.dart';
 
+var categories = [
+  'smartphones',
+  'laptops',
+  'fragrances',
+  'skincare',
+  'groceries',
+  'home-decoration'
+];
+
 class ProductScreen extends StatelessWidget {
   const ProductScreen({Key? key, required this.title}) : super(key: key);
 
@@ -19,24 +28,25 @@ class ProductScreen extends StatelessWidget {
         body: Builder(
           builder: (ctx) {
             var productController = ctx.watch<ProductController>();
-            return SingleChildScrollView(
-              child: Column(children: [
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
-                    CategoryFilterButton(name: 'smartphones'),
-                    CategoryFilterButton(name: 'laptops'),
-                    CategoryFilterButton(name: 'fragrances'),
-                    CategoryFilterButton(name: 'skincare'),
-                    CategoryFilterButton(name: 'groceries'),
-                    CategoryFilterButton(name: 'home-decoration'),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                GridView.count(
+            return Column(mainAxisSize: MainAxisSize.min, children: [
+              // const SizedBox(
+              //   height: 10,
+              // ),
+              SizedBox(
+                height: 80,
+                child: ListView.builder(
+                    itemCount: categories.length,
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return CategoryFilterButton(
+                        name: categories[index],
+                      );
+                    }),
+              ),
+              //const SizedBox(height: 20),
+              Expanded(
+                child: GridView.count(
                   physics: const ScrollPhysics(),
                   childAspectRatio: (1 / 1.5),
                   crossAxisCount: 2,
@@ -89,8 +99,8 @@ class ProductScreen extends StatelessWidget {
                       )
                       .toList(),
                 ),
-              ]),
-            );
+              ),
+            ]);
           },
         ),
       ),
@@ -98,25 +108,44 @@ class ProductScreen extends StatelessWidget {
   }
 }
 
-class CategoryFilterButton extends StatelessWidget {
+class CategoryFilterButton extends StatefulWidget {
   final String name;
-  const CategoryFilterButton({Key? key, required this.name}) : super(key: key);
+
+  const CategoryFilterButton({
+    Key? key,
+    required this.name,
+  }) : super(key: key);
+
+  @override
+  State<CategoryFilterButton> createState() => _CategoryFilterButtonState();
+}
+
+class _CategoryFilterButtonState extends State<CategoryFilterButton> {
+  late bool buttonPressed;
 
   @override
   Widget build(BuildContext context) {
     var productController = context.watch<ProductController>();
     return ChangeNotifierProvider(
-      create: (_) => ProductController(Api())..filterProductsBy(name),
-      child: SizedBox(
-        width: 65,
-        height: 40,
-        child: ElevatedButton(
-          onPressed: () {
-            productController.filterProductsBy(name);
-          },
-          child: Text(
-            name,
-            style: const TextStyle(fontSize: 10),
+      create: (_) => ProductController(Api())..filterProductsBy(widget.name),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SizedBox(
+          width: 120,
+          height: 40,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                textStyle: const TextStyle(
+                  fontSize: 15,
+                )),
+            onPressed: () {
+              productController.filterProductsBy(widget.name);
+            },
+            child: Text(
+              widget.name,
+              style: const TextStyle(fontSize: 11),
+            ),
           ),
         ),
       ),
